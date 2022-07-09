@@ -17,11 +17,16 @@ namespace ShootingBall.Player
             _moveSpeed = moveSpeed;
 
             gameCycle.OnGameStart += HandleGameStart;
+            gameCycle.OnGameEnd += _ => { HandleGameEnd(); };
         }
         
         private void HandleGameStart()
         {
             _rigidbody.AddForce(_moveDirection * _moveSpeed);
+        }
+        private void HandleGameEnd()
+        {
+            _rigidbody.AddForce(-_moveDirection * _moveSpeed);
         }
     }
 }

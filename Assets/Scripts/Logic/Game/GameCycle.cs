@@ -1,4 +1,5 @@
 ﻿using System;
+using ShootingBall.Objects;
 using ShootingBall.Player;
 
 namespace ShootingBall.Game
@@ -8,9 +9,11 @@ namespace ShootingBall.Game
         public event Action OnGameStart;
         public event Action<GameEndType> OnGameEnd;
 
-        public GameCycle(IAccumulativeShooter accumulativeShooter, 
+        public GameCycle(IDoorHandler doorHandler, IAccumulativeShooter accumulativeShooter, 
             IPlayerSmashedInObstacleHandler playerSmashedInObstacleHandler)
         {
+            doorHandler.OnPlayerEnteredDoor += HandleVictory;
+            
             accumulativeShooter.OnDevastation += HandleGameOver;
             playerSmashedInObstacleHandler.OnPlayerSmashedInObstacle += HandleGameOver;
         }
