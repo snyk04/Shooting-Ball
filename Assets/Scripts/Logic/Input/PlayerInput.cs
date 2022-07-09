@@ -1,3 +1,4 @@
+using ShootingBall.Game;
 using ShootingBall.Player;
 using UnityEngine.InputSystem;
 
@@ -6,17 +7,20 @@ namespace ShootingBall.Input
     public class PlayerInput
     {
         private readonly IAccumulativeShooter _accumulativeShooter;
-
-        public PlayerInput(IAccumulativeShooter accumulativeShooter)
+        private readonly InputAction _inputAction;
+        
+        public PlayerInput(IAccumulativeShooter accumulativeShooter, IGameCycle gameCycle)
         {
             _accumulativeShooter = accumulativeShooter;
             
             var controls = new Controls();
-            InputAction inputAction = controls.Player.StartAccumulating;
-            inputAction.Enable();
+            _inputAction = controls.Player.StartAccumulating;
+            _inputAction.started += HandleAccumulationStart;
+            _inputAction.performed += HandleAccumulationStop;
             
-            inputAction.started += HandleAccumulationStart;
-            inputAction.performed += HandleAccumulationStop;
+            _inputAction.Enable();
+
+            gameCycle.OnGameEnd += _ => HandleGameEnd();
         }
         
         private void HandleAccumulationStart(InputAction.CallbackContext obj)
@@ -26,6 +30,11 @@ namespace ShootingBall.Input
         private void HandleAccumulationStop(InputAction.CallbackContext obj)
         {
             _accumulativeShooter.Shoot();
+        }
+        
+        private void HandleGameEnd()
+        {
+            _inputAction.Disable();
         }
     }
 }

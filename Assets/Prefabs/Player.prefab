@@ -125,4 +125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _playerBall: {fileID: 3337784655713927830}
-  _ballPrefab: {fileID: 9031801535559792420, guid: 4a1420f4341a8344f8bcdbda99ea027e, type: 3}
+  _bulletBallPrefab: {fileID: 9031801535559792420, guid: 4a1420f4341a8344f8bcdbda99ea027e, type: 3}
+  _scaleStep: 0.01
+  _shotPower: 100
+  _bulletBallOffset: {x: 1, y: 0, z: 0}
+  _shotDirection: {x: 1, y: 0, z: 0}

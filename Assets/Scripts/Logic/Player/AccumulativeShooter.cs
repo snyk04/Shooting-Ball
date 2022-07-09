@@ -9,6 +9,7 @@ namespace ShootingBall.Player
     public class AccumulativeShooter : IAccumulativeShooter
     {
         private const int TargetFrameRate = 60;
+        private const float DevastateScaleValue = 0.1f;
         
         private const string BulletBallPrefabLacksRigidbodyMessage = "Bullet ball prefab lacks rigidbody.";
         private const string NoAccumulationErrorMessage = "You can't shoot without accumulation.";
@@ -23,7 +24,9 @@ namespace ShootingBall.Player
 
         private Rigidbody _bulletBallRigidbody;
         private CancellationTokenSource _cancellationTokenSource;
-
+        
+        public event Action OnDevastation;
+        
         public AccumulativeShooter(Transform playerBall, GameObject bulletBallPrefab, 
             float scaleStep, float shotPower, Vector3 bulletBallOffset, Vector3 shotDirection)
         {
@@ -64,11 +67,35 @@ namespace ShootingBall.Player
         {
             while (!cancellationToken.IsCancellationRequested)
             {
+                if (IsPlayerBallDevastated())
+                {
+                    HandleDevastation();
+                    return;
+                }
+
                 bulletBall.transform.localScale += Vector3.one * _scaleStep;
-                _playerBall.transform.localScale -= Vector3.one * _scaleStep;
-                
-                await Task.Delay((int)(1f / TargetFrameRate * 1000), cancellationToken);
+                _playerBall.localScale -= Vector3.one * _scaleStep;
+
+                try
+                {
+                    await Task.Delay((int)(1f / TargetFrameRate * 1000), cancellationToken);
+                }
+                catch
+                {
+                    return;
+                }
             }
+        }
+        private bool IsPlayerBallDevastated()
+        {
+            Debug.Log(_playerBall.localScale.x);
+            return _playerBall.localScale.x <= DevastateScaleValue;
+        }
+        private void HandleDevastation()
+        {
+            _cancellationTokenSource.Cancel();
+            OnDevastation?.Invoke();
+            Debug.Log("Devastated");
         }
 
         public void Shoot()
