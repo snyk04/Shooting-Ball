@@ -26,7 +26,7 @@ namespace ShootingBall.Objects
         
         public void OnCollisionEnter(Collision collision)
         {
-            if (!ColliderIsObstacle(collision.collider, out ObstacleComponent _))
+            if (!collision.collider.TryGetComponent(out ObstacleComponent _))
             {
                 return;
             }
@@ -41,17 +41,12 @@ namespace ShootingBall.Objects
             Collider[] nearbyColliders = Physics.OverlapSphere(position, InfestRadius);
             foreach (Collider collider in nearbyColliders)
             {
-                if (ColliderIsObstacle(collider, out ObstacleComponent obstacleComponent))
+                if (collider.TryGetComponent(out ObstacleComponent obstacleComponent))
                 {
                     IObstacle obstacle = obstacleComponent.Object;
                     obstacle.Infest();
                 }
             }
-        }
-
-        private bool ColliderIsObstacle(Component collider, out ObstacleComponent obstacleComponent)
-        {
-            return collider.TryGetComponent(out obstacleComponent);
         }
     }
 }
