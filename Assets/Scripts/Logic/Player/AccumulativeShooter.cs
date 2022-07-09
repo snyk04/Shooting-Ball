@@ -88,14 +88,12 @@ namespace ShootingBall.Player
         }
         private bool IsPlayerBallDevastated()
         {
-            Debug.Log(_playerBall.localScale.x);
             return _playerBall.localScale.x <= DevastateScaleValue;
         }
         private void HandleDevastation()
         {
             _cancellationTokenSource.Cancel();
             OnDevastation?.Invoke();
-            Debug.Log("Devastated");
         }
 
         public void Shoot()
