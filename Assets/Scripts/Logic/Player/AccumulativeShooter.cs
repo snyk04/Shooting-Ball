@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ShootingBall.Objects;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -10,8 +11,9 @@ namespace ShootingBall.Player
     {
         private const int TargetFrameRate = 60;
         private const float DevastateScaleValue = 0.1f;
-        
-        private const string BulletBallPrefabLacksRigidbodyMessage = "Bullet ball prefab lacks rigidbody.";
+
+        private const string BulletBallPrefabLacksRigidbodyMessage = "Bullet ball prefab lacks Rigidbody.";
+        private const string BulletBallPrefabLacksBulletBallComponentMessage = "Bullet ball prefab lacks BulletBallComponent.";
         private const string NoAccumulationErrorMessage = "You can't shoot without accumulation.";
         
         private readonly Transform _playerBall;
@@ -30,10 +32,7 @@ namespace ShootingBall.Player
         public AccumulativeShooter(Transform playerBall, GameObject bulletBallPrefab, 
             float scaleStep, float shotPower, Vector3 bulletBallOffset, Vector3 shotDirection)
         {
-            if (!IsBulletBallPrefabValid(bulletBallPrefab))
-            {
-                throw new Exception(BulletBallPrefabLacksRigidbodyMessage);
-            }
+            CheckBulletBallPrefab(bulletBallPrefab);
             
             _playerBall = playerBall;
             _bulletBallPrefab = bulletBallPrefab;
@@ -43,18 +42,26 @@ namespace ShootingBall.Player
             _bulletBallOffset = bulletBallOffset;
             _shotDirection = shotDirection;
         }
-        private bool IsBulletBallPrefabValid(GameObject bulletBallPrefab)
+        private void CheckBulletBallPrefab(GameObject bulletBallPrefab)
         {
-            return bulletBallPrefab.TryGetComponent(out Rigidbody rigidbody);
+            if (!bulletBallPrefab.TryGetComponent(out Rigidbody _))
+            {
+                throw new ArgumentException(BulletBallPrefabLacksRigidbodyMessage);
+            }
+
+            if (!bulletBallPrefab.TryGetComponent(out BulletBallComponent _))
+            {
+                throw new ArgumentException(BulletBallPrefabLacksBulletBallComponentMessage);
+            }
         }
         
         public void StartAccumulating()
         {
-            GameObject bulletBall = CreateBulletBall();
-            _bulletBallRigidbody = bulletBall.GetComponent<Rigidbody>();
+            GameObject bulletBallObject = CreateBulletBall();
+            _bulletBallRigidbody = bulletBallObject.GetComponent<Rigidbody>();
             
             _cancellationTokenSource = new CancellationTokenSource();
-            Accumulate(bulletBall, _cancellationTokenSource.Token);
+            Accumulate(bulletBallObject, _cancellationTokenSource.Token);
         }
         private GameObject CreateBulletBall()
         {
@@ -63,7 +70,7 @@ namespace ShootingBall.Player
             
             return bulletBall;
         }
-        private async void Accumulate(GameObject bulletBall, CancellationToken cancellationToken)
+        private async void Accumulate(GameObject bulletBallObject, CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -73,7 +80,7 @@ namespace ShootingBall.Player
                     return;
                 }
 
-                bulletBall.transform.localScale += Vector3.one * _scaleStep;
+                bulletBallObject.transform.localScale += Vector3.one * _scaleStep;
                 _playerBall.localScale -= Vector3.one * _scaleStep;
 
                 try
