@@ -1,0 +1,45 @@
+{
+    "name": "Controls",
+    "maps": [
+        {
+            "name": "Player",
+            "id": "93c1e3de-bdb8-4b34-b55b-79adabb2317a",
+            "actions": [
+                {
+                    "name": "StartAccumulating",
+                    "type": "Button",
+                    "id": "3d8fdf42-445c-4ac2-a0ea-680131f6f50f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "fcbad274-2222-436d-a938-7042d89a7cd6",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "SlowTap(duration=0.01)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartAccumulating",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "085bf205-fc0e-4857-b9d0-be87858a0045",
+                    "path": "<Touchscreen>/Press",
+                    "interactions": "SlowTap(duration=0.01)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartAccumulating",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
