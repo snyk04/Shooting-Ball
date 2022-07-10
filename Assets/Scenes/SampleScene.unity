@@ -6220,7 +6220,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1904596968}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 4.24}
+  m_LocalPosition: {x: 0, y: 0, z: 26.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6985,10 +6985,22 @@ PrefabInstance:
       propertyPath: _gameCycle
       value: 
       objectReference: {fileID: 1436178202}
+    - target: {fileID: 7969384604419977143, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
+      propertyPath: _shotPower
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 7969384604419977143, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
+      propertyPath: _bulletBallOffset.z
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 8992347300262148120, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
       propertyPath: _gameCycle
       value: 
       objectReference: {fileID: 1436178202}
+    - target: {fileID: 8992347300262148120, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
+      propertyPath: _moveSpeed
+      value: 125
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
 --- !u!4 &8992347300262148113 stripped
