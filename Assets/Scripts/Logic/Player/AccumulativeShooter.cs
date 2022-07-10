@@ -57,18 +57,26 @@ namespace ShootingBall.Player
         
         public void StartAccumulating()
         {
-            GameObject bulletBallObject = CreateBulletBall();
-            _bulletBallRigidbody = bulletBallObject.GetComponent<Rigidbody>();
+            GameObject bulletBall = CreateBulletBall();
+            PrepareBulletBall(bulletBall);
             
             _cancellationTokenSource = new CancellationTokenSource();
-            Accumulate(bulletBallObject, _cancellationTokenSource.Token);
+            Accumulate(bulletBall, _cancellationTokenSource.Token);
         }
         private GameObject CreateBulletBall()
         {
             GameObject bulletBall = Object.Instantiate(_bulletBallPrefab, _playerBall.position + _bulletBallOffset, Quaternion.identity);
-            bulletBall.transform.localScale = Vector3.zero;
-            
+
+                
             return bulletBall;
+        }
+
+        private void PrepareBulletBall(GameObject bulletBall)
+        {
+            bulletBall.transform.localScale = Vector3.zero;
+            _bulletBallRigidbody = bulletBall.GetComponent<Rigidbody>();
+            Vector3 playerVelocity = _playerBall.GetComponent<Rigidbody>().velocity;
+            _bulletBallRigidbody.velocity = playerVelocity;
         }
         private async void Accumulate(GameObject bulletBallObject, CancellationToken cancellationToken)
         {
