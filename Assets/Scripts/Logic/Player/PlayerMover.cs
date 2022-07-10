@@ -26,7 +26,7 @@ namespace ShootingBall.Player
         }
         private void HandleGameEnd()
         {
-            _rigidbody.AddForce(-_moveDirection * _moveSpeed);
+            _rigidbody.isKinematic = true;
         }
     }
 }
