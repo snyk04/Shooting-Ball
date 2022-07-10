@@ -26,7 +26,7 @@ namespace ShootingBall.Objects
         public async void Infest()
         {
             _meshRenderer.material = _infestedMaterial;
-            await Task.Delay((int)_pauseBetweenInfestationAndDestruction * 1000, _cancellationTokenSource.Token);
+            await Task.Delay((int) (_pauseBetweenInfestationAndDestruction * 1000), _cancellationTokenSource.Token);
             Object.Destroy(_gameObject);
         }
     }

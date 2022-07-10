@@ -1,27 +1,26 @@
+using System;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ShootingBall.Objects
 {
     public class BulletBall : IBulletBall
     {
-        // TODO : Remove
-        private const float InfestRadius = 3;
-        
         public float Power { get; private set; }
 
         private readonly GameObject _gameObject;
+        private readonly float _maxInfestRadius;
 
-        public BulletBall(GameObject gameObject)
+        public BulletBall(GameObject gameObject, float maxInfestRadius)
         {
-            // TODO : Remove
-            Power = 1;
-
             _gameObject = gameObject;
+            _maxInfestRadius = maxInfestRadius;
         }
         
         public void IncreasePower(float value)
         {
             Power += value;
+            Power = Math.Clamp(Power, 0f, 1f);
         }
         
         public void OnCollisionEnter(Collision collision)
@@ -35,10 +34,9 @@ namespace ShootingBall.Objects
             
             Object.Destroy(_gameObject);
         }
-
         private void InfestNearbyObstacles(Vector3 position)
         {
-            Collider[] nearbyColliders = Physics.OverlapSphere(position, InfestRadius);
+            Collider[] nearbyColliders = Physics.OverlapSphere(position, Power * _maxInfestRadius);
             foreach (Collider collider in nearbyColliders)
             {
                 if (collider.TryGetComponent(out ObstacleComponent obstacleComponent))

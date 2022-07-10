@@ -10,37 +10,46 @@ namespace ShootingBall.Player
     public class AccumulativeShooter : IAccumulativeShooter, IDisposable
     {
         private const int TargetFrameRate = 60;
-        private const float DevastateScaleValue = 0.1f;
-
+        
         private const string BulletBallPrefabLacksRigidbodyMessage = "Bullet ball prefab lacks Rigidbody.";
         private const string BulletBallPrefabLacksBulletBallComponentMessage = "Bullet ball prefab lacks BulletBallComponent.";
         private const string NoAccumulationErrorMessage = "You can't shoot without accumulation.";
         
         private readonly Transform _playerBall;
         private readonly GameObject _bulletBallPrefab;
-        
-        private readonly float _scaleStep;
-        private readonly float _shotPower;
+
+        private readonly float _powerValueToDevastate;
+        private readonly float _bulletBallStartPower;
+        private readonly float _powerStep;
+        private readonly float _shotSpeed;
         private readonly Vector3 _bulletBallOffset;
         private readonly Vector3 _shotDirection;
 
         private Rigidbody _bulletBallRigidbody;
         private CancellationTokenSource _cancellationTokenSource;
-        
+
+        private float _power;
+
         public event Action OnDevastation;
         
-        public AccumulativeShooter(Transform playerBall, GameObject bulletBallPrefab, 
-            float scaleStep, float shotPower, Vector3 bulletBallOffset, Vector3 shotDirection)
+        public AccumulativeShooter(Transform playerBall, GameObject bulletBallPrefab, float startPower, 
+            float powerValueToDevastate, float bulletBallStartPower, float powerStep, float shotSpeed, Vector3 bulletBallOffset,
+            Vector3 shotDirection)
         {
             CheckBulletBallPrefab(bulletBallPrefab);
             
             _playerBall = playerBall;
             _bulletBallPrefab = bulletBallPrefab;
 
-            _scaleStep = scaleStep;
-            _shotPower = shotPower;
+            _power = startPower;
+            _powerValueToDevastate = powerValueToDevastate;
+            _bulletBallStartPower = bulletBallStartPower;
+            _powerStep = powerStep;
+            _shotSpeed = shotSpeed;
             _bulletBallOffset = bulletBallOffset;
             _shotDirection = shotDirection;
+
+            PreparePlayerBall(playerBall, startPower);
         }
         private void CheckBulletBallPrefab(GameObject bulletBallPrefab)
         {
@@ -54,11 +63,21 @@ namespace ShootingBall.Player
                 throw new ArgumentException(BulletBallPrefabLacksBulletBallComponentMessage);
             }
         }
+        private void PreparePlayerBall(Transform playerBall, float startPower)
+        {
+            Vector3 oldPlayerBallPosition = playerBall.position;
+            playerBall.position = new Vector3(
+                oldPlayerBallPosition.x,
+                startPower / 2,
+                oldPlayerBallPosition.z
+            );
+            playerBall.localScale = Vector3.one * startPower;
+        }
         
         public void StartAccumulating()
         {
             GameObject bulletBall = CreateBulletBall();
-            PrepareBulletBall(bulletBall);
+            PrepareBalls(_playerBall, bulletBall);
             
             _cancellationTokenSource = new CancellationTokenSource();
             Accumulate(bulletBall, _cancellationTokenSource.Token);
@@ -72,15 +91,20 @@ namespace ShootingBall.Player
                 Quaternion.identity
                 );
         }
-        private void PrepareBulletBall(GameObject bulletBall)
+        private void PrepareBalls(Transform playerBall, GameObject bulletBall)
         {
-            bulletBall.transform.localScale = Vector3.zero;
+            playerBall.localScale -= Vector3.one * _bulletBallStartPower;
+            _power -= _bulletBallStartPower;
+            bulletBall.transform.localScale = Vector3.one * _bulletBallStartPower;
+            
             _bulletBallRigidbody = bulletBall.GetComponent<Rigidbody>();
             Vector3 playerVelocity = _playerBall.GetComponent<Rigidbody>().velocity;
             _bulletBallRigidbody.velocity = playerVelocity;
         }
         private async void Accumulate(GameObject bulletBallObject, CancellationToken cancellationToken)
         {
+            IBulletBall bulletBall = bulletBallObject.GetComponent<BulletBallComponent>().Object;
+            
             while (!cancellationToken.IsCancellationRequested)
             {
                 if (IsPlayerBallDevastated())
@@ -88,10 +112,17 @@ namespace ShootingBall.Player
                     HandleDevastation();
                     return;
                 }
+                if (IsBulletBallFull(bulletBall))
+                {
+                    return;
+                }
 
-                bulletBallObject.transform.localScale += Vector3.one * _scaleStep;
-                _playerBall.localScale -= Vector3.one * _scaleStep;
+                bulletBallObject.transform.localScale += Vector3.one * _powerStep;
+                _playerBall.localScale -= Vector3.one * _powerStep;
 
+                _power -= _powerStep;
+                bulletBall.IncreasePower(_powerStep);
+                
                 try
                 {
                     await Task.Delay((int)(1f / TargetFrameRate * 1000), cancellationToken);
@@ -104,7 +135,11 @@ namespace ShootingBall.Player
         }
         private bool IsPlayerBallDevastated()
         {
-            return _playerBall.localScale.x <= DevastateScaleValue;
+            return _power <= _powerValueToDevastate;
+        }
+        private bool IsBulletBallFull(IBulletBall bulletBall)
+        {
+            return bulletBall.Power >= 1;
         }
         private void HandleDevastation()
         {
@@ -120,7 +155,7 @@ namespace ShootingBall.Player
                 return;
             }
             
-            _bulletBallRigidbody.AddForce(_shotDirection * _shotPower);
+            _bulletBallRigidbody.AddForce(_shotDirection * _shotSpeed);
             _cancellationTokenSource.Cancel();
         }
 

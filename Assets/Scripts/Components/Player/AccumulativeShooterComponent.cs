@@ -8,10 +8,13 @@ namespace ShootingBall.Player
         [Header("Objects")]
         [SerializeField] private Transform _playerBall;
         [SerializeField] private GameObject _bulletBallPrefab;
-        
-        [Header("Settings")]
-        [SerializeField] private float _scaleStep;
-        [SerializeField] private float _shotPower;
+
+        [Header("Settings")] 
+        [SerializeField] private float _startPower;
+        [SerializeField] private float _powerValueToDevastate;
+        [SerializeField] private float _bulletBallStartPower;
+        [SerializeField] private float _powerStep;
+        [SerializeField] private float _shotSpeed;
         [SerializeField] private Vector3 _bulletBallOffset;
         [SerializeField] private Vector3 _shotDirection;
         
@@ -20,8 +23,11 @@ namespace ShootingBall.Player
             return new AccumulativeShooter(
                 _playerBall,
                 _bulletBallPrefab,
-                _scaleStep,
-                _shotPower,
+                _startPower,
+                _powerValueToDevastate,
+                _bulletBallStartPower,
+                _powerStep,
+                _shotSpeed,
                 _bulletBallOffset,
                 _shotDirection
                 );

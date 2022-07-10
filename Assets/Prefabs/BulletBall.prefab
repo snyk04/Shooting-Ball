@@ -127,3 +127,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2846dc4c3f64cea97ce1f3e382fdbff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxInfestRadius: 5
