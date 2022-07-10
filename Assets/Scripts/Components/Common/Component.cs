@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 
 namespace ShootingBall.Common
 {
@@ -24,5 +26,13 @@ namespace ShootingBall.Common
         }
 
         protected abstract T CreateObject();
+
+        private void OnDestroy()
+        {
+            if (((IList)typeof(T).GetInterfaces()).Contains(typeof(IDisposable)))
+            {
+                ((IDisposable) _object).Dispose();
+            }
+        }
     }
 }
