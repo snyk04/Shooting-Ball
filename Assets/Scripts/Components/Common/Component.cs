@@ -20,7 +20,7 @@ namespace ShootingBall.Common
 
         private void Awake()
         {
-            _object = CreateObject();
+            _object ??= CreateObject();
         }
 
         protected abstract T CreateObject();
