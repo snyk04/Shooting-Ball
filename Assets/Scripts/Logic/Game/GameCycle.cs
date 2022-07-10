@@ -9,10 +9,10 @@ namespace ShootingBall.Game
         public event Action OnGameStart;
         public event Action<GameEndType> OnGameEnd;
 
-        public GameCycle(IDoorHandler doorHandler, IAccumulativeShooter accumulativeShooter, 
+        public GameCycle(IDoor door, IAccumulativeShooter accumulativeShooter, 
             IPlayerSmashedInObstacleHandler playerSmashedInObstacleHandler)
         {
-            doorHandler.OnPlayerEnteredDoor += HandleVictory;
+            door.OnPlayerEnteredDoor += HandleVictory;
             
             accumulativeShooter.OnDevastation += HandleGameOver;
             playerSmashedInObstacleHandler.OnPlayerSmashedInObstacle += HandleGameOver;

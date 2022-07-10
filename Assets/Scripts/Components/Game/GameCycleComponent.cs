@@ -7,13 +7,13 @@ namespace ShootingBall.Game
 {
     public class GameCycleComponent : Component<GameCycle>
     {
-        [SerializeField] private DoorHandlerComponent _doorHandler;
+        [SerializeField] private DoorComponent _door;
         [SerializeField] private AccumulativeShooterComponent _accumulativeShooter;
         [SerializeField] private PlayerSmashedInObstacleHandlerComponent _playerSmashedInObstacleHandler;
         
         protected override GameCycle CreateObject()
         {
-            return new GameCycle(_doorHandler.Object, _accumulativeShooter.Object,
+            return new GameCycle(_door.Object, _accumulativeShooter.Object,
                 _playerSmashedInObstacleHandler.Object);
         }
 

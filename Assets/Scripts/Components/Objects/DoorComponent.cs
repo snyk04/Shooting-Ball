@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace ShootingBall.Objects
 {
-    public class DoorHandlerComponent : Component<DoorHandler>
+    public class DoorComponent : Component<Door>
     {
-        protected override DoorHandler CreateObject()
+        protected override Door CreateObject()
         {
-            return new DoorHandler();
+            return new Door();
         }
 
         private void OnTriggerEnter(Collider other)

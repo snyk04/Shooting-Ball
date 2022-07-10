@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ShootingBall.Objects
 {
-    public class DoorHandler : IDoorHandler
+    public class Door : IDoor
     {
         public event Action OnPlayerEnteredDoor;
 

@@ -4650,7 +4650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23adcdc31e414c3e8dba75d5b23179e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _doorHandler: {fileID: 1654852511}
+  _door: {fileID: 1654852511}
   _accumulativeShooter: {fileID: 8992347300262148114}
   _playerSmashedInObstacleHandler: {fileID: 8992347300262148125}
 --- !u!1001 &1448820296
@@ -5128,7 +5128,7 @@ GameObject:
   - component: {fileID: 1654852511}
   - component: {fileID: 1654852510}
   m_Layer: 0
-  m_Name: WayThrough
+  m_Name: Doorway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

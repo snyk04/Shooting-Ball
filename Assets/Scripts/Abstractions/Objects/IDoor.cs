@@ -2,7 +2,7 @@
 
 namespace ShootingBall.Objects
 {
-    public interface IDoorHandler
+    public interface IDoor
     {
         event Action OnPlayerEnteredDoor;
     }
