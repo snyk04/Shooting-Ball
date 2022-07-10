@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace ShootingBall.Player
 {
-    public class AccumulativeShooter : IAccumulativeShooter
+    public class AccumulativeShooter : IAccumulativeShooter, IDisposable
     {
         private const int TargetFrameRate = 60;
         private const float DevastateScaleValue = 0.1f;
@@ -65,12 +65,13 @@ namespace ShootingBall.Player
         }
         private GameObject CreateBulletBall()
         {
-            GameObject bulletBall = Object.Instantiate(_bulletBallPrefab, _playerBall.position + _bulletBallOffset, Quaternion.identity);
-
-                
-            return bulletBall;
+            Vector3 position = _playerBall.position + _bulletBallOffset;
+            return Object.Instantiate(
+                _bulletBallPrefab,
+                position,
+                Quaternion.identity
+                );
         }
-
         private void PrepareBulletBall(GameObject bulletBall)
         {
             bulletBall.transform.localScale = Vector3.zero;
@@ -121,6 +122,11 @@ namespace ShootingBall.Player
             
             _bulletBallRigidbody.AddForce(_shotDirection * _shotPower);
             _cancellationTokenSource.Cancel();
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource?.Cancel();
         }
     }
 }
