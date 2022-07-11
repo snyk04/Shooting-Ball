@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Logic.Audio
 {
-    public class AccumulativeShooterAudioComponent : Component<AccumulativeShooterAudio>
+    public class AccumulativeShooterVoiceOverComponent : Component<AccumulativeShooterVoiceOver>
     {
         [Header("References")]
         [SerializeField] private AccumulativeShooterComponent _accumulativeShooter;
@@ -18,9 +18,9 @@ namespace Logic.Audio
         [SerializeField] private AudioClip _hitSound;
         [SerializeField] private AudioClip _devastationSound;   
         
-        protected override AccumulativeShooterAudio CreateObject()
+        protected override AccumulativeShooterVoiceOver CreateObject()
         {
-            return new AccumulativeShooterAudio(_accumulativeShooter.Object, _audioSource, _accumulateSound, _shotSound,
+            return new AccumulativeShooterVoiceOver(_accumulativeShooter.Object, _audioSource, _accumulateSound, _shotSound,
                 _hitSound, _devastationSound);
         }
     }
