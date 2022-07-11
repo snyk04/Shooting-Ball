@@ -13,7 +13,6 @@ namespace ShootingBall.Player
         
         private const string BulletBallPrefabLacksRigidbodyMessage = "Bullet ball prefab lacks Rigidbody.";
         private const string BulletBallPrefabLacksBulletBallComponentMessage = "Bullet ball prefab lacks BulletBallComponent.";
-        private const string NoAccumulationErrorMessage = "You can't shoot without accumulation.";
         
         private readonly Transform _playerBall;
         private readonly GameObject _bulletBallPrefab;
@@ -26,13 +25,20 @@ namespace ShootingBall.Player
         private readonly Vector3 _shotDirection;
 
         private Rigidbody _bulletBallRigidbody;
+        private Vector3 _playerBallVelocity;
+        
         private CancellationTokenSource _cancellationTokenSource;
 
         private float _power;
+        private float Power
+        {
+            get => _power;
+            set => _power = Math.Max(0, value);
+        }
 
-        public event Action OnDevastation;
         public event Action<IBulletBall> OnAccumulationStarted;
         public event Action OnShot;
+        public event Action OnDevastation;
         
         public AccumulativeShooter(Transform playerBall, GameObject bulletBallPrefab, float startPower, 
             float powerValueToDevastate, float bulletBallStartPower, float powerStep, float shotSpeed, Vector3 bulletBallOffset,
@@ -79,7 +85,8 @@ namespace ShootingBall.Player
         public void StartAccumulating()
         {
             GameObject bulletBall = CreateBulletBall();
-            PrepareBalls(_playerBall, bulletBall);
+            SetBallsPower(_playerBall, bulletBall);
+            PushBulletBall(bulletBall);
             OnAccumulationStarted?.Invoke(bulletBall.GetComponent<BulletBallComponent>().Object);
             
             _cancellationTokenSource = new CancellationTokenSource();
@@ -88,22 +95,25 @@ namespace ShootingBall.Player
         private GameObject CreateBulletBall()
         {
             Vector3 position = _playerBall.position + _bulletBallOffset;
-            return Object.Instantiate(
-                _bulletBallPrefab,
-                position,
-                Quaternion.identity
-                );
+            return Object.Instantiate(_bulletBallPrefab, position, Quaternion.identity);
         }
-        private void PrepareBalls(Transform playerBall, GameObject bulletBall)
+        private void SetBallsPower(Transform playerBall, GameObject bulletBallObject)
         {
-            playerBall.localScale -= Vector3.one * _bulletBallStartPower;
-            _power -= _bulletBallStartPower;
-            bulletBall.transform.localScale = Vector3.one * _bulletBallStartPower;
+            IBulletBall bulletBall = bulletBallObject.GetComponent<BulletBallComponent>().Object;
             
-            _bulletBallRigidbody = bulletBall.GetComponent<Rigidbody>();
-            Vector3 playerVelocity = _playerBall.GetComponent<Rigidbody>().velocity;
-            _bulletBallRigidbody.velocity = playerVelocity;
+            Power -= _bulletBallStartPower;
+            bulletBall.IncreasePower(_bulletBallStartPower);
+            
+            playerBall.localScale = Vector3.one * Power;
+            bulletBallObject.transform.localScale = Vector3.one * bulletBall.Power;
         }
+        private void PushBulletBall(GameObject bulletBall)
+        {
+            _bulletBallRigidbody = bulletBall.GetComponent<Rigidbody>();
+            _playerBallVelocity = _playerBall.GetComponent<Rigidbody>().velocity;
+            _bulletBallRigidbody.velocity = _playerBallVelocity;
+        }
+        
         private async void Accumulate(GameObject bulletBallObject, CancellationToken cancellationToken)
         {
             IBulletBall bulletBall = bulletBallObject.GetComponent<BulletBallComponent>().Object;
@@ -116,11 +126,11 @@ namespace ShootingBall.Player
                     return;
                 }
 
-                bulletBallObject.transform.localScale += Vector3.one * _powerStep * 2;
-                _playerBall.localScale -= Vector3.one * _powerStep;
-
                 bulletBall.IncreasePower(_powerStep * 2);
-                _power -= _powerStep;
+                Power -= _powerStep;
+                
+                bulletBallObject.transform.localScale = Vector3.one * bulletBall.Power;
+                _playerBall.localScale = Vector3.one * Power;
                 
                 try
                 {
@@ -138,6 +148,7 @@ namespace ShootingBall.Player
         }
         private void HandleDevastation()
         {
+            _bulletBallRigidbody.isKinematic = true;
             _cancellationTokenSource.Cancel();
             OnDevastation?.Invoke();
         }
@@ -150,7 +161,7 @@ namespace ShootingBall.Player
             }
             
             OnShot?.Invoke();
-            _bulletBallRigidbody.AddForce(_shotDirection * _shotSpeed);
+            _bulletBallRigidbody.AddForce(_shotDirection * _shotSpeed - _playerBallVelocity);
             _cancellationTokenSource.Cancel();
         }
 

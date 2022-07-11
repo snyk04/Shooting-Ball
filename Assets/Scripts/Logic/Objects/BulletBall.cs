@@ -10,7 +10,7 @@ namespace ShootingBall.Objects
         private readonly GameObject _ballObject;
         private readonly float _infestRadiusRatio;
 
-        private float _power;
+        public float Power { get; private set; }
 
         public event Action OnHit;
 
@@ -22,7 +22,7 @@ namespace ShootingBall.Objects
         
         public void IncreasePower(float value)
         {
-            _power += value;
+            Power += value;
         }
         
         public void OnCollisionEnter(Collision collision)
@@ -42,7 +42,7 @@ namespace ShootingBall.Objects
         }
         private void InfestNearbyObstacles(Vector3 position)
         {
-            Collider[] nearbyColliders = Physics.OverlapSphere(position, _power * _infestRadiusRatio);
+            Collider[] nearbyColliders = Physics.OverlapSphere(position, Power * _infestRadiusRatio);
             foreach (Collider collider in nearbyColliders)
             {
                 if (collider.TryGetComponent(out ObstacleComponent obstacleComponent))
