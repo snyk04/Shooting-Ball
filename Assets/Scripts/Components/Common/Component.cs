@@ -6,19 +6,8 @@ namespace ShootingBall.Common
 {
     public abstract class Component<T> : MonoBehaviour
     {
-        public T Object
-        { 
-            get 
-            {
-                if (_object == null)
-                {
-                    _object = CreateObject();
-                }
-
-                return _object;
-            } 
-        }
         private T _object;
+        public T Object => _object ??= CreateObject();
 
         private void Awake()
         {
