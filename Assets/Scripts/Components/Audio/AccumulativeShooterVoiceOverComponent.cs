@@ -2,7 +2,7 @@
 using ShootingBall.Player;
 using UnityEngine;
 
-namespace Logic.Audio
+namespace ShootingBall.Audio
 {
     public class AccumulativeShooterVoiceOverComponent : Component<AccumulativeShooterVoiceOver>
     {

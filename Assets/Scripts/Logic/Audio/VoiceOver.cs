@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Logic.Audio
+namespace ShootingBall.Audio
 {
     public abstract class VoiceOver
     {
