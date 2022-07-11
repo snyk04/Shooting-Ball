@@ -31,6 +31,8 @@ namespace ShootingBall.Player
         private float _power;
 
         public event Action OnDevastation;
+        public event Action<IBulletBall> OnAccumulationStarted;
+        public event Action OnShot;
         
         public AccumulativeShooter(Transform playerBall, GameObject bulletBallPrefab, float startPower, 
             float powerValueToDevastate, float bulletBallStartPower, float powerStep, float shotSpeed, Vector3 bulletBallOffset,
@@ -78,6 +80,7 @@ namespace ShootingBall.Player
         {
             GameObject bulletBall = CreateBulletBall();
             PrepareBalls(_playerBall, bulletBall);
+            OnAccumulationStarted?.Invoke(bulletBall.GetComponent<BulletBallComponent>().Object);
             
             _cancellationTokenSource = new CancellationTokenSource();
             Accumulate(bulletBall, _cancellationTokenSource.Token);
@@ -146,6 +149,7 @@ namespace ShootingBall.Player
                 return;
             }
             
+            OnShot?.Invoke();
             _bulletBallRigidbody.AddForce(_shotDirection * _shotSpeed);
             _cancellationTokenSource.Cancel();
         }

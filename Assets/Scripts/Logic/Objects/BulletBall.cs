@@ -6,10 +6,12 @@ namespace ShootingBall.Objects
 {
     public class BulletBall : IBulletBall
     {
-        public float Power { get; private set; }
-
         private readonly GameObject _gameObject;
         private readonly float _maxInfestRadius;
+
+        private float _power;
+
+        public event Action OnHit;
 
         public BulletBall(GameObject gameObject, float maxInfestRadius)
         {
@@ -19,7 +21,7 @@ namespace ShootingBall.Objects
         
         public void IncreasePower(float value)
         {
-            Power += value;
+            _power += value;
         }
         
         public void OnCollisionEnter(Collision collision)
@@ -29,13 +31,13 @@ namespace ShootingBall.Objects
                 return;
             }
 
+            OnHit?.Invoke();
             InfestNearbyObstacles(collision.transform.position);
-            
             Object.Destroy(_gameObject);
         }
         private void InfestNearbyObstacles(Vector3 position)
         {
-            Collider[] nearbyColliders = Physics.OverlapSphere(position, Power * _maxInfestRadius);
+            Collider[] nearbyColliders = Physics.OverlapSphere(position, _power * _maxInfestRadius);
             foreach (Collider collider in nearbyColliders)
             {
                 if (collider.TryGetComponent(out ObstacleComponent obstacleComponent))
