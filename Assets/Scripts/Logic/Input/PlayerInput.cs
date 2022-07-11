@@ -18,6 +18,8 @@ namespace ShootingBall.Input
             _inputAction.performed += HandleAccumulationStop;
             
             gameCycle.OnGameEnd += _ => HandleGameEnd();
+
+            Enable();
         }
 
         public void Enable()

@@ -7,11 +7,10 @@ namespace ShootingBall.Input
     public class FirstInputGameStarterComponent : Component<FirstInputGameStarter>
     {
         [SerializeField] private GameCycleComponent _gameCycle;
-        [SerializeField] private PlayerInputComponent _playerInput;
         
         protected override FirstInputGameStarter CreateObject()
         {
-            return new FirstInputGameStarter(_gameCycle.Object, _playerInput.Object);
+            return new FirstInputGameStarter(_gameCycle.Object);
         }
     }
 }
