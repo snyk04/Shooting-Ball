@@ -15,11 +15,12 @@ namespace ShootingBall.Objects
 
         [Header("Settings")] 
         [SerializeField] private int _openedDoorRotationAngle;
+        [SerializeField] private float _openingLength;
         
         protected override Door CreateObject()
         {
-            return new Door(_playerApproachingTrigger.Object, _doorwayTrigger.Object, _door,
-                _attachmentPoint, _openedDoorRotationAngle);
+            return new Door(_playerApproachingTrigger.Object, _doorwayTrigger.Object, _door, _attachmentPoint, 
+                _openedDoorRotationAngle, _openingLength);
         }
     }
 }

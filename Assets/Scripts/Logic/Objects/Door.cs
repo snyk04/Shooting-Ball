@@ -14,15 +14,18 @@ namespace ShootingBall.Objects
         private readonly Transform _attachmentPoint;
 
         private readonly int _openedDoorRotationAngle;
+
+        private readonly float _openingLength;
         
         public event Action OnPlayerEnteredDoor;
 
         public Door(ITrigger playerApproachingTrigger, ITrigger playerEnteredDoorwayTrigger, Transform door,
-            Transform attachmentPoint, int openedDoorRotationAngle)
+            Transform attachmentPoint, int openedDoorRotationAngle, float openingLength)
         {
             _door = door;
             _attachmentPoint = attachmentPoint;
             _openedDoorRotationAngle = openedDoorRotationAngle;
+            _openingLength = openingLength;
             
             playerApproachingTrigger.OnTrigger += gameObject =>
             {
@@ -44,13 +47,9 @@ namespace ShootingBall.Objects
             return gameObject.TryGetComponent(out PlayerSmashedInObstacleHandlerComponent _);
         }
         
-        private async void Open()
+        private void Open()
         {
-            for (int i = 0; i < _openedDoorRotationAngle; i++)
-            {
-                _door.RotateAround(_attachmentPoint.position, Vector3.up, -1);
-                await Task.Yield();
-            }
+            _door.RotateAround(_attachmentPoint.position, Vector3.up, -_openedDoorRotationAngle);
         }
     }
 }
