@@ -21,6 +21,8 @@ namespace ShootingBall.Camera
             _camera = camera;
             _objectToAlign = objectToAlign;
             _alignmentOffset = alignmentOffset;
+
+            _camera.position = _objectToAlign.position + _alignmentOffset;
         }
 
         private async void Align(CancellationToken cancellationToken)
@@ -31,8 +33,7 @@ namespace ShootingBall.Camera
                 await Task.Yield();
             }
         }
-
-
+        
         public void Dispose()
         {
             _cancellationTokenSource?.Cancel();

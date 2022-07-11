@@ -37,6 +37,15 @@ namespace ShootingBall.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""StartGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c5da4ed-c39e-4f7f-b9c6-979396f69295"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -61,6 +70,28 @@ namespace ShootingBall.Input
                     ""action"": ""StartAccumulating"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b59df18c-cda5-411d-a2e1-7e30220aeddb"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StartGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f419c57-3a53-433f-8cdc-cfa817e6dd3b"",
+                    ""path"": ""<Touchscreen>/Press"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""StartGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -70,6 +101,7 @@ namespace ShootingBall.Input
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_StartAccumulating = m_Player.FindAction("StartAccumulating", throwIfNotFound: true);
+            m_Player_StartGame = m_Player.FindAction("StartGame", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -130,11 +162,13 @@ namespace ShootingBall.Input
         private readonly InputActionMap m_Player;
         private IPlayerActions m_PlayerActionsCallbackInterface;
         private readonly InputAction m_Player_StartAccumulating;
+        private readonly InputAction m_Player_StartGame;
         public struct PlayerActions
         {
             private @Controls m_Wrapper;
             public PlayerActions(@Controls wrapper) { m_Wrapper = wrapper; }
             public InputAction @StartAccumulating => m_Wrapper.m_Player_StartAccumulating;
+            public InputAction @StartGame => m_Wrapper.m_Player_StartGame;
             public InputActionMap Get() { return m_Wrapper.m_Player; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -147,6 +181,9 @@ namespace ShootingBall.Input
                     @StartAccumulating.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStartAccumulating;
                     @StartAccumulating.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStartAccumulating;
                     @StartAccumulating.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStartAccumulating;
+                    @StartGame.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStartGame;
+                    @StartGame.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStartGame;
+                    @StartGame.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnStartGame;
                 }
                 m_Wrapper.m_PlayerActionsCallbackInterface = instance;
                 if (instance != null)
@@ -154,6 +191,9 @@ namespace ShootingBall.Input
                     @StartAccumulating.started += instance.OnStartAccumulating;
                     @StartAccumulating.performed += instance.OnStartAccumulating;
                     @StartAccumulating.canceled += instance.OnStartAccumulating;
+                    @StartGame.started += instance.OnStartGame;
+                    @StartGame.performed += instance.OnStartGame;
+                    @StartGame.canceled += instance.OnStartGame;
                 }
             }
         }
@@ -161,6 +201,7 @@ namespace ShootingBall.Input
         public interface IPlayerActions
         {
             void OnStartAccumulating(InputAction.CallbackContext context);
+            void OnStartGame(InputAction.CallbackContext context);
         }
     }
 }

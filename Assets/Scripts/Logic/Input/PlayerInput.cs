@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace ShootingBall.Input
 {
-    public class PlayerInput
+    public class PlayerInput : IPlayerInput
     {
         private readonly IAccumulativeShooter _accumulativeShooter;
         private readonly InputAction _inputAction;
@@ -13,14 +13,16 @@ namespace ShootingBall.Input
         {
             _accumulativeShooter = accumulativeShooter;
             
-            var controls = new Controls();
-            _inputAction = controls.Player.StartAccumulating;
+            _inputAction = new Controls().Player.StartAccumulating;
             _inputAction.started += HandleAccumulationStart;
             _inputAction.performed += HandleAccumulationStop;
             
-            _inputAction.Enable();
-
             gameCycle.OnGameEnd += _ => HandleGameEnd();
+        }
+
+        public void Enable()
+        {
+            _inputAction.Enable();
         }
         
         private void HandleAccumulationStart(InputAction.CallbackContext obj)

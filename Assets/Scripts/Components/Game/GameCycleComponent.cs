@@ -16,10 +16,5 @@ namespace ShootingBall.Game
             return new GameCycle(_door.Object, _accumulativeShooter.Object,
                 _playerSmashedInObstacleHandler.Object);
         }
-
-        private void Start()
-        {
-            Object.StartGame();
-        }
     }
 }
