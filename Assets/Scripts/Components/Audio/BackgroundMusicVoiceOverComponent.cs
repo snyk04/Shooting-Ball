@@ -17,7 +17,7 @@ namespace ShootingBall.Audio
 
         protected override BackgroundMusicVoiceOver CreateObject()
         {
-            return new BackgroundMusicVoiceOver(_gameCycle.Object, _audioSource, _backgroundMusic);
+            return new BackgroundMusicVoiceOver(_audioSource, _gameCycle.Object, _backgroundMusic);
         }
     }
 }

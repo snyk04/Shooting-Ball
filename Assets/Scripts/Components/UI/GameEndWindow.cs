@@ -28,8 +28,11 @@ namespace ShootingBall.UI
 
         private void Awake()
         {
-            _gameCycle.Object.OnGameEnd += HandleGameEnd;
-            _okButton.onClick.AddListener(_sceneLoader.Object.ReloadCurrentScene);
+            IGameCycle gameCycle = _gameCycle.Object;
+            ISceneLoader sceneLoader = _sceneLoader.Object;
+            
+            gameCycle.OnGameEnd += HandleGameEnd;
+            _okButton.onClick.AddListener(sceneLoader.ReloadCurrentScene);
             
             _gameEndTypeToGameResultTextDictionary = new Dictionary<GameEndType, string>
             {

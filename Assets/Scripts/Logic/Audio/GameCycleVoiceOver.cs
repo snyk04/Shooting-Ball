@@ -6,9 +6,9 @@ namespace ShootingBall.Audio
     public class GameCycleVoiceOver : VoiceOver
     {
         private readonly AudioClip _victorySound;
-        
-        public GameCycleVoiceOver(IGameCycle gameCycle, AudioSource audioSource, 
-            AudioClip victorySound) : base(audioSource)
+
+        public GameCycleVoiceOver(AudioSource audioSource, IGameCycle gameCycle, AudioClip victorySound) : base(
+            audioSource)
         {
             _victorySound = victorySound;
 

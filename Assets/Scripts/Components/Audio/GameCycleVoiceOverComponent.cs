@@ -17,7 +17,7 @@ namespace ShootingBall.Audio
 
         protected override GameCycleVoiceOver CreateObject()
         {
-            return new GameCycleVoiceOver(_gameCycle.Object, _audioSource, _victorySound);
+            return new GameCycleVoiceOver(_audioSource, _gameCycle.Object, _victorySound);
         }
     }
 }

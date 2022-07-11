@@ -17,7 +17,7 @@ namespace ShootingBall.Audio
         
         protected override PlayerSmashInObstacleVoiceOver CreateObject()
         {
-            return new PlayerSmashInObstacleVoiceOver(_playerSmashedInObstacleHandler.Object, _audioSource, _smashSound);
+            return new PlayerSmashInObstacleVoiceOver(_audioSource, _playerSmashedInObstacleHandler.Object, _smashSound);
         }
     }
 }

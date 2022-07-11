@@ -20,7 +20,7 @@ namespace ShootingBall.Audio
         
         protected override AccumulativeShooterVoiceOver CreateObject()
         {
-            return new AccumulativeShooterVoiceOver(_accumulativeShooter.Object, _audioSource, _accumulateSound, _shotSound,
+            return new AccumulativeShooterVoiceOver(_audioSource, _accumulativeShooter.Object, _accumulateSound, _shotSound,
                 _hitSound, _devastationSound);
         }
     }

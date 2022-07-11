@@ -9,13 +9,14 @@ namespace ShootingBall.Audio
         private readonly AudioClip _accumulateSound;
         private readonly AudioClip _hitSound;
 
-        public AccumulativeShooterVoiceOver(IAccumulativeShooter accumulativeShooter, AudioSource audioSource,
-            AudioClip accumulateSound, AudioClip shotSound, AudioClip hitSound, AudioClip devastationSound) : base(audioSource)
+        public AccumulativeShooterVoiceOver(AudioSource audioSource, IAccumulativeShooter accumulativeShooter,
+            AudioClip accumulateSound, AudioClip shotSound, AudioClip hitSound, AudioClip devastationSound) : base(
+            audioSource)
         {
             accumulativeShooter.OnAccumulationStarted += HandleAccumulationStarted;
             accumulativeShooter.OnShot += () => PlaySound(shotSound);
             accumulativeShooter.OnDevastation += () => PlaySound(devastationSound);
-            
+
             _accumulateSound = accumulateSound;
             _hitSound = hitSound;
         }
