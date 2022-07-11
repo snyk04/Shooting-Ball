@@ -21,6 +21,7 @@ namespace ShootingBall.Player
         private readonly float _bulletBallStartPower;
         private readonly float _powerStep;
         private readonly float _shotSpeed;
+        private readonly float _playerPowerToBulletPowerRatio;
         private readonly Vector3 _bulletBallOffset;
         private readonly Vector3 _shotDirection;
 
@@ -41,8 +42,8 @@ namespace ShootingBall.Player
         public event Action OnDevastation;
         
         public AccumulativeShooter(Transform playerBall, GameObject bulletBallPrefab, float startPower, 
-            float powerValueToDevastate, float bulletBallStartPower, float powerStep, float shotSpeed, Vector3 bulletBallOffset,
-            Vector3 shotDirection)
+            float powerValueToDevastate, float bulletBallStartPower, float powerStep, float shotSpeed,
+            float playerPowerToBulletPowerRatio, Vector3 bulletBallOffset, Vector3 shotDirection)
         {
             CheckBulletBallPrefab(bulletBallPrefab);
             
@@ -54,6 +55,7 @@ namespace ShootingBall.Player
             _bulletBallStartPower = bulletBallStartPower;
             _powerStep = powerStep;
             _shotSpeed = shotSpeed;
+            _playerPowerToBulletPowerRatio = playerPowerToBulletPowerRatio;
             _bulletBallOffset = bulletBallOffset;
             _shotDirection = shotDirection;
 
@@ -126,7 +128,7 @@ namespace ShootingBall.Player
                     return;
                 }
 
-                bulletBall.IncreasePower(_powerStep * 2);
+                bulletBall.IncreasePower(_powerStep * _playerPowerToBulletPowerRatio);
                 Power -= _powerStep;
                 
                 bulletBallObject.transform.localScale = Vector3.one * bulletBall.Power;

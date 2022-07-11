@@ -15,6 +15,8 @@ namespace ShootingBall.Player
         [SerializeField] private float _bulletBallStartPower;
         [SerializeField] private float _powerStep;
         [SerializeField] private float _shotSpeed;
+        [SerializeField] private float _playerPowerToBulletPowerRatio;
+
         [SerializeField] private Vector3 _bulletBallOffset;
         [SerializeField] private Vector3 _shotDirection;
         
@@ -28,6 +30,7 @@ namespace ShootingBall.Player
                 _bulletBallStartPower,
                 _powerStep,
                 _shotSpeed,
+                _playerPowerToBulletPowerRatio,
                 _bulletBallOffset,
                 _shotDirection
                 );
