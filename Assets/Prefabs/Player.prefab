@@ -150,7 +150,7 @@ MonoBehaviour:
   _powerValueToDevastate: 0.025
   _bulletBallStartPower: 0.1
   _powerStep: 0.025
-  _shotSpeed: 20
+  _shotSpeed: 14
   _bulletBallOffset: {x: 0, y: 0, z: 2}
   _shotDirection: {x: 0, y: 0, z: 1}
 --- !u!114 &8992347300262148120
@@ -168,7 +168,7 @@ MonoBehaviour:
   _gameCycle: {fileID: 0}
   _rigidbody: {fileID: 8992347300262148119}
   _moveDirection: {x: 0, y: 0, z: 1}
-  _moveSpeed: 10
+  _moveSpeed: 7
 --- !u!114 &2797138006852327404
 MonoBehaviour:
   m_ObjectHideFlags: 0
