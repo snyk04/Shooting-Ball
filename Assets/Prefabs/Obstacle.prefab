@@ -129,5 +129,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 5748535810574759626}
-  _infestedMaterial: {fileID: 2100000, guid: 2b7a585146e3d704fbe40578a31652ad, type: 2}
+  _infestedMaterial: {fileID: 2100000, guid: 353b262884699b741a3fdf502421d32b, type: 2}
   _pauseBetweenInfestationAndDestruction: 0.25
