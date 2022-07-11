@@ -9,6 +9,7 @@ namespace ShootingBall.Objects
     {
         private readonly GameObject _gameObject;
         private readonly MeshRenderer _meshRenderer;
+        
         private readonly Material _infestedMaterial;
         private readonly float _pauseBetweenInfestationAndDestruction;
 

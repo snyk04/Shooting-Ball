@@ -13,26 +13,27 @@ namespace ShootingBall.Objects
 
         private readonly CancellationTokenSource _cancellationTokenSource = new();
 
-        public PlayerBallLine(Transform playerBall, Transform line)
+        public PlayerBallLine(IGameCycle gameCycle, Transform playerBall, Transform line)
         {
             _playerBall = playerBall;
             _line = line;
-            
-            FollowBall(_cancellationTokenSource.Token);
+
+            gameCycle.OnGameStart += () => CopyBallWidthRoutine(_cancellationTokenSource.Token);
+
+            CopyBallWidth();
         }
-        private async void FollowBall(CancellationToken cancellationToken)
+        private async void CopyBallWidthRoutine(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                Vector3 oldScale = _line.localScale;
-                _line.localScale = new Vector3(
-                    _playerBall.localScale.x,
-                    oldScale.y,
-                    oldScale.z
-                );
-                
+                CopyBallWidth();
                 await Task.Yield();
             }
+        }
+        private void CopyBallWidth()
+        {
+            Vector3 oldScale = _line.localScale;
+            _line.localScale = new Vector3(_playerBall.localScale.x, oldScale.y, oldScale.z);
         }
 
         public void Dispose()

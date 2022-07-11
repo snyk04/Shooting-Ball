@@ -17,8 +17,7 @@ namespace ShootingBall.Objects
             {
                 float x = Random.Range(minX, maxX);
                 float z = Random.Range(minZ, maxZ);
-                var position = new Vector3(x, y, z);
-                Object.Instantiate(obstaclePrefab, position, Quaternion.identity, obstacleContainer);
+                Object.Instantiate(obstaclePrefab, new Vector3(x, y, z), Quaternion.identity, obstacleContainer);
             }
         }
     }

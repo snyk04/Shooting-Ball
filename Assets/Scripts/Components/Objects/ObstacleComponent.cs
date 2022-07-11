@@ -8,9 +8,9 @@ namespace ShootingBall.Objects
     {
         [Header("Objects")]
         [SerializeField] private MeshRenderer _meshRenderer;
-        [SerializeField] private Material _infestedMaterial;
         
         [Header("Settings")]
+        [SerializeField] private Material _infestedMaterial;
         [SerializeField] private float _pauseBetweenInfestationAndDestruction;
         
         protected override Obstacle CreateObject()

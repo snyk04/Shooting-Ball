@@ -20,6 +20,10 @@ namespace ShootingBall.Objects
         public Door(ITrigger playerApproachingTrigger, ITrigger playerEnteredDoorwayTrigger, Transform door,
             Transform attachmentPoint, int openedDoorRotationAngle)
         {
+            _door = door;
+            _attachmentPoint = attachmentPoint;
+            _openedDoorRotationAngle = openedDoorRotationAngle;
+            
             playerApproachingTrigger.OnTrigger += gameObject =>
             {
                 if (ObjectIsPlayer(gameObject))
@@ -34,10 +38,6 @@ namespace ShootingBall.Objects
                     OnPlayerEnteredDoor?.Invoke();
                 }
             };
-                
-            _door = door;
-            _attachmentPoint = attachmentPoint;
-            _openedDoorRotationAngle = openedDoorRotationAngle;
         }
         private bool ObjectIsPlayer(GameObject gameObject)
         {
