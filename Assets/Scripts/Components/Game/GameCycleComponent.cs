@@ -13,8 +13,7 @@ namespace ShootingBall.Game
         
         protected override GameCycle CreateObject()
         {
-            return new GameCycle(_door.Object, _accumulativeShooter.Object,
-                _playerSmashedInObstacleHandler.Object);
+            return new GameCycle(_door.Object, _accumulativeShooter.Object, _playerSmashedInObstacleHandler.Object);
         }
     }
 }
