@@ -10,28 +10,33 @@ namespace ShootingBall.Camera
     {
         private readonly Transform _camera;
         private readonly Transform _objectToAlign;
+        
         private readonly Vector3 _alignmentOffset;
 
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         
         public CameraAligner(IGameCycle gameCycle, Transform camera, Transform objectToAlign, Vector3 alignmentOffset)
         {
-            gameCycle.OnGameStart += () => Align(_cancellationTokenSource.Token);
-
             _camera = camera;
             _objectToAlign = objectToAlign;
             _alignmentOffset = alignmentOffset;
+            
+            gameCycle.OnGameStart += () => AlignRoutine(_cancellationTokenSource.Token);
 
-            _camera.position = _objectToAlign.position + _alignmentOffset;
+            Align();
         }
 
-        private async void Align(CancellationToken cancellationToken)
+        private async void AlignRoutine(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                _camera.position = _objectToAlign.position + _alignmentOffset;
+                Align();
                 await Task.Yield();
             }
+        }
+        private void Align()
+        {
+            _camera.position = _objectToAlign.position + _alignmentOffset;
         }
         
         public void Dispose()

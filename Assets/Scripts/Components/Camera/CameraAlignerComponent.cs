@@ -1,4 +1,3 @@
-using System;
 using ShootingBall.Common;
 using ShootingBall.Game;
 using UnityEngine;
