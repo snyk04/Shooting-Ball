@@ -112,16 +112,12 @@ namespace ShootingBall.Player
                     HandleDevastation();
                     return;
                 }
-                if (IsBulletBallFull(bulletBall))
-                {
-                    return;
-                }
 
-                bulletBallObject.transform.localScale += Vector3.one * _powerStep;
+                bulletBallObject.transform.localScale += Vector3.one * _powerStep * 2;
                 _playerBall.localScale -= Vector3.one * _powerStep;
 
+                bulletBall.IncreasePower(_powerStep * 2);
                 _power -= _powerStep;
-                bulletBall.IncreasePower(_powerStep);
                 
                 try
                 {
@@ -137,10 +133,6 @@ namespace ShootingBall.Player
         {
             return _power <= _powerValueToDevastate;
         }
-        private bool IsBulletBallFull(IBulletBall bulletBall)
-        {
-            return bulletBall.Power >= 1;
-        }
         private void HandleDevastation()
         {
             _cancellationTokenSource.Cancel();
@@ -151,7 +143,6 @@ namespace ShootingBall.Player
         {
             if (_cancellationTokenSource == null || _bulletBallRigidbody == null)
             {
-                Debug.LogError(NoAccumulationErrorMessage);
                 return;
             }
             

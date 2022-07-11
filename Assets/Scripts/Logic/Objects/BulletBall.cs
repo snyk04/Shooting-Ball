@@ -20,7 +20,6 @@ namespace ShootingBall.Objects
         public void IncreasePower(float value)
         {
             Power += value;
-            Power = Math.Clamp(Power, 0f, 1f);
         }
         
         public void OnCollisionEnter(Collision collision)
