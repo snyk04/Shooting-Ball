@@ -1,5 +1,4 @@
-﻿using System;
-using ShootingBall.Game;
+﻿using ShootingBall.Game;
 using UnityEngine;
 
 namespace ShootingBall.UI
