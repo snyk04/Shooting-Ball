@@ -1,14 +1,19 @@
-﻿using ShootingBall.Game;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using ShootingBall.Game;
 using UnityEngine;
 
 namespace ShootingBall.Player
 {
-    public class PlayerMover
+    public class PlayerMover : IDisposable
     {
         private readonly Rigidbody _rigidbody;
 
         private readonly Vector3 _moveDirection;
         private readonly float _moveSpeed;
+
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
         
         public PlayerMover(IGameCycle gameCycle, Rigidbody rigidbody, Vector3 moveDirection, float moveSpeed)
         {
@@ -16,17 +21,27 @@ namespace ShootingBall.Player
             _moveDirection = moveDirection;
             _moveSpeed = moveSpeed;
 
-            gameCycle.OnGameStart += HandleGameStart;
+            gameCycle.OnGameStart += () => MovePlayer(_cancellationTokenSource.Token);
             gameCycle.OnGameEnd += _ => { HandleGameEnd(); };
         }
         
-        private void HandleGameStart()
+        private async void MovePlayer(CancellationToken cancellationToken)
         {
-            _rigidbody.AddForce(_moveDirection * _moveSpeed);
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                _rigidbody.velocity = _moveDirection * _moveSpeed;
+                await Task.Yield();
+            }
         }
         private void HandleGameEnd()
         {
-            _rigidbody.isKinematic = true;
+            _rigidbody.velocity = Vector3.zero;
+            _cancellationTokenSource?.Cancel();
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokenSource?.Cancel();
         }
     }
 }

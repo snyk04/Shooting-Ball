@@ -2948,22 +2948,10 @@ PrefabInstance:
       propertyPath: _gameCycle
       value: 
       objectReference: {fileID: 1436178202}
-    - target: {fileID: 7969384604419977143, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
-      propertyPath: _shotSpeed
-      value: 1000
-      objectReference: {fileID: 0}
-    - target: {fileID: 7969384604419977143, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
-      propertyPath: _startPower
-      value: 2.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8992347300262148120, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
       propertyPath: _gameCycle
       value: 
       objectReference: {fileID: 1436178202}
-    - target: {fileID: 8992347300262148120, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
-      propertyPath: _moveSpeed
-      value: 500
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c04cc2f879870f45b3253f71fd8eb28, type: 3}
 --- !u!4 &8992347300262148113 stripped

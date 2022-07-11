@@ -146,11 +146,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerBall: {fileID: 3337784655713927830}
   _bulletBallPrefab: {fileID: 9031801535559792420, guid: 4a1420f4341a8344f8bcdbda99ea027e, type: 3}
-  _startPower: 2
+  _startPower: 2.5
   _powerValueToDevastate: 0.025
   _bulletBallStartPower: 0.1
   _powerStep: 0.025
-  _shotSpeed: 500
+  _shotSpeed: 20
   _bulletBallOffset: {x: 0, y: 0, z: 2}
   _shotDirection: {x: 0, y: 0, z: 1}
 --- !u!114 &8992347300262148120
@@ -168,7 +168,7 @@ MonoBehaviour:
   _gameCycle: {fileID: 0}
   _rigidbody: {fileID: 8992347300262148119}
   _moveDirection: {x: 0, y: 0, z: 1}
-  _moveSpeed: 250
+  _moveSpeed: 10
 --- !u!114 &2797138006852327404
 MonoBehaviour:
   m_ObjectHideFlags: 0

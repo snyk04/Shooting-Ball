@@ -161,7 +161,7 @@ namespace ShootingBall.Player
             }
             
             OnShot?.Invoke();
-            _bulletBallRigidbody.AddForce(_shotDirection * _shotSpeed - _playerBallVelocity);
+            _bulletBallRigidbody.velocity = _shotDirection * _shotSpeed;
             _cancellationTokenSource.Cancel();
         }
 
