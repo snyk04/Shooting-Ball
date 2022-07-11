@@ -1,4 +1,5 @@
 using System;
+using ShootingBall.Player;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -26,13 +27,17 @@ namespace ShootingBall.Objects
         
         public void OnCollisionEnter(Collision collision)
         {
-            if (!collision.collider.TryGetComponent(out ObstacleComponent _))
+            if (collision.collider.TryGetComponent(out PlayerSmashedInObstacleHandlerComponent _))
             {
                 return;
             }
-
+            
+            if (collision.collider.TryGetComponent(out ObstacleComponent _))
+            {
+                InfestNearbyObstacles(collision.transform.position);
+            }
+            
             OnHit?.Invoke();
-            InfestNearbyObstacles(collision.transform.position);
             Object.Destroy(_gameObject);
         }
         private void InfestNearbyObstacles(Vector3 position)

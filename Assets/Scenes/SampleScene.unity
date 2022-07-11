@@ -251,10 +251,10 @@ MonoBehaviour:
   _obstacleContainer: {fileID: 119395758}
   _minX: -6.5
   _maxX: 6.5
-  _y: 1
+  _y: 2
   _minZ: 20
   _maxZ: 50
-  _amountOfObstacles: 100
+  _amountOfObstacles: 50
 --- !u!1 &136525110
 GameObject:
   m_ObjectHideFlags: 0

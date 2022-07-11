@@ -70,7 +70,7 @@ namespace ShootingBall.Player
             Vector3 oldPlayerBallPosition = playerBall.position;
             playerBall.position = new Vector3(
                 oldPlayerBallPosition.x,
-                startPower / 2,
+                startPower,
                 oldPlayerBallPosition.z
             );
             playerBall.localScale = Vector3.one * startPower;
